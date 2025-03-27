@@ -194,33 +194,80 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 	}
 
 	@SuppressWarnings("unchecked")
+//	private void flatten(Properties properties, Map<String, Object> input, String path) {
+//		input.forEach((key, value) -> {
+//			String name = getPropertyName(path, key);
+//			if (value instanceof Map) {
+//				// Need a compound key
+//				flatten(properties, (Map<String, Object>) value, name);
+//			}
+//			else if (value instanceof Collection<?> collection) {
+//				// Need a compound key
+//				properties.put(name, StringUtils.collectionToCommaDelimitedString(collection));
+//				int count = 0;
+//				for (Object item : collection) {
+//					String itemKey = "[" + (count++) + "]";
+//					flatten(properties, Collections.singletonMap(itemKey, item), name);
+//				}
+//			}
+//			else if (value instanceof String) {
+//				properties.put(name, value);
+//			}
+//			else if (value instanceof Number || value instanceof Boolean) {
+//				properties.put(name, value.toString());
+//			}
+//			else {
+//				properties.put(name, (value != null) ? value : "");
+//			}
+//		});
+//	}
+
+
+
+
+
 	private void flatten(Properties properties, Map<String, Object> input, String path) {
 		input.forEach((key, value) -> {
 			String name = getPropertyName(path, key);
-			if (value instanceof Map) {
-				// Need a compound key
-				flatten(properties, (Map<String, Object>) value, name);
-			}
-			else if (value instanceof Collection<?> collection) {
-				// Need a compound key
-				properties.put(name, StringUtils.collectionToCommaDelimitedString(collection));
-				int count = 0;
-				for (Object item : collection) {
-					String itemKey = "[" + (count++) + "]";
-					flatten(properties, Collections.singletonMap(itemKey, item), name);
-				}
-			}
-			else if (value instanceof String) {
-				properties.put(name, value);
-			}
-			else if (value instanceof Number || value instanceof Boolean) {
-				properties.put(name, value.toString());
-			}
-			else {
-				properties.put(name, (value != null) ? value : "");
-			}
+			processValue(properties, name, value);
 		});
 	}
+
+	private void processValue(Properties properties, String name, Object value) {
+		if (value instanceof Map<?, ?> mapValue) {
+			processMap(properties, name, (Map<String, Object>) mapValue);
+		} else if (value instanceof Collection<?> collection) {
+			processCollection(properties, name, collection);
+		} else {
+			processSimpleValue(properties, name, value);
+		}
+	}
+
+	private void processMap(Properties properties, String name, Map<String, Object> mapValue) {
+		flatten(properties, mapValue, name);
+	}
+
+	private void processCollection(Properties properties, String name, Collection<?> collection) {
+		properties.put(name, StringUtils.collectionToCommaDelimitedString(collection));
+		int count = 0;
+		for (Object item : collection) {
+			flatten(properties, Collections.singletonMap("[" + (count++) + "]", item), name);
+		}
+	}
+
+	private void processSimpleValue(Properties properties, String name, Object value) {
+		properties.put(name, (value instanceof Number || value instanceof Boolean || value instanceof String)
+				? value.toString()
+				: "");
+	}
+
+
+
+
+
+
+
+
 
 	private String getPropertyName(String path, String key) {
 		if (!StringUtils.hasText(path)) {
