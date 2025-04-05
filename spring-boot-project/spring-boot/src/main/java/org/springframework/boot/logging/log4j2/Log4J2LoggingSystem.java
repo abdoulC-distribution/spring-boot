@@ -338,22 +338,22 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		this.confManager.reinitialize(initializationContext);
 	}
 
-	private void reinitializeWithOverrides(List<String> overrides) {
-		LoggerContext context = getLoggerContext();
-		Configuration base = context.getConfiguration();
-		List<AbstractConfiguration> configurations = new ArrayList<>();
-		configurations.add((AbstractConfiguration) base);
-		for (String override : overrides) {
-			try {
-				configurations.add((AbstractConfiguration) load(override, context));
-			}
-			catch (IOException ex) {
-				throw new RuntimeException("Failed to load overriding configuration from '" + override + "'", ex);
-			}
-		}
-		CompositeConfiguration composite = new CompositeConfiguration(configurations);
-		context.reconfigure(composite);
-	}
+//	private void reinitializeWithOverrides(List<String> overrides) {
+//		LoggerContext context = getLoggerContext();
+//		Configuration base = context.getConfiguration();
+//		List<AbstractConfiguration> configurations = new ArrayList<>();
+//		configurations.add((AbstractConfiguration) base);
+//		for (String override : overrides) {
+//			try {
+//				configurations.add((AbstractConfiguration) load(override, context));
+//			}
+//			catch (IOException ex) {
+//				throw new RuntimeException("Failed to load overriding configuration from '" + override + "'", ex);
+//			}
+//		}
+//		CompositeConfiguration composite = new CompositeConfiguration(configurations);
+//		context.reconfigure(composite);
+//	}
 
 	@Override
 	public Set<LogLevel> getSupportedLogLevels() {

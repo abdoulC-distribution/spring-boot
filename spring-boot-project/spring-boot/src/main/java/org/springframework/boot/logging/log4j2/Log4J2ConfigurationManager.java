@@ -1,5 +1,20 @@
 package org.springframework.boot.logging.log4j2;
 
+import java.util.Collections;
+import org.apache.logging.log4j.util.PropertiesUtil;
+import org.apache.logging.log4j.core.config.ConfigurationFactory;
+import org.springframework.util.StringUtils;
+import org.springframework.boot.logging.LoggingInitializationContext;
+import org.springframework.boot.logging.LogFile;
+import org.springframework.boot.logging.LoggingInitializationContext;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ClassUtils;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.AbstractConfiguration;
+import org.apache.logging.log4j.core.config.composite.CompositeConfiguration;
+
+
 public class Log4J2ConfigurationManager {
 
 	protected String[] getStandardConfigLocations() {
@@ -53,6 +68,27 @@ public class Log4J2ConfigurationManager {
 		List<String> overrides = getOverrides(initializationContext);
 		applySystemProperties(initializationContext.getEnvironment(), logFile);
 		loadConfiguration(location, logFile, overrides);
+	}
+
+	protected boolean isClassAvailable(String className) {
+		return ClassUtils.isPresent(className, getClassLoader());
+	}
+
+	private void reinitializeWithOverrides(List<String> overrides) {
+		LoggerContext context = getLoggerContext();
+		Configuration base = context.getConfiguration();
+		List<AbstractConfiguration> configurations = new ArrayList<>();
+		configurations.add((AbstractConfiguration) base);
+		for (String override : overrides) {
+			try {
+				configurations.add((AbstractConfiguration) load(override, context));
+			}
+			catch (IOException ex) {
+				throw new RuntimeException("Failed to load overriding configuration from '" + override + "'", ex);
+			}
+		}
+		CompositeConfiguration composite = new CompositeConfiguration(configurations);
+		context.reconfigure(composite);
 	}
 
 }
