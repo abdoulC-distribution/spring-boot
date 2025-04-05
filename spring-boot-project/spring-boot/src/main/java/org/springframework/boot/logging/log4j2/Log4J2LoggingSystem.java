@@ -74,6 +74,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import Log4J2Initializer;
+import Log4J2ConfigurationManager;
 
 /**
  * {@link LoggingSystem} for <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a>.
@@ -92,6 +93,8 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 	private static final String LOG4J_LOG_MANAGER = "org.apache.logging.log4j.jul.LogManager";
 
 	private final Log4J2Initializer initializer;
+
+	private final Log4J2ConfigurationManager confManager;
 
 	private static final SpringEnvironmentPropertySource propertySource = new SpringEnvironmentPropertySource();
 
@@ -119,33 +122,35 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 
 		super(classLoader);
 		this.initializer = new Log4J2LoggingSystem(classLoader);
+		this.confManager = new Log4J2ConfigurationManager();
 	}
 
 	@Override
 	protected String[] getStandardConfigLocations() {
-		List<String> locations = new ArrayList<>();
-		locations.add("log4j2-test.properties");
-		if (isClassAvailable("com.fasterxml.jackson.dataformat.yaml.YAMLParser")) {
-			Collections.addAll(locations, "log4j2-test.yaml", "log4j2-test.yml");
-		}
-		if (isClassAvailable("com.fasterxml.jackson.databind.ObjectMapper")) {
-			Collections.addAll(locations, "log4j2-test.json", "log4j2-test.jsn");
-		}
-		locations.add("log4j2-test.xml");
-		locations.add("log4j2.properties");
-		if (isClassAvailable("com.fasterxml.jackson.dataformat.yaml.YAMLParser")) {
-			Collections.addAll(locations, "log4j2.yaml", "log4j2.yml");
-		}
-		if (isClassAvailable("com.fasterxml.jackson.databind.ObjectMapper")) {
-			Collections.addAll(locations, "log4j2.json", "log4j2.jsn");
-		}
-		locations.add("log4j2.xml");
-		String propertyDefinedLocation = new PropertiesUtil(new Properties())
-			.getStringProperty(ConfigurationFactory.CONFIGURATION_FILE_PROPERTY);
-		if (propertyDefinedLocation != null) {
-			locations.add(propertyDefinedLocation);
-		}
-		return StringUtils.toStringArray(locations);
+//		List<String> locations = new ArrayList<>();
+//		locations.add("log4j2-test.properties");
+//		if (isClassAvailable("com.fasterxml.jackson.dataformat.yaml.YAMLParser")) {
+//			Collections.addAll(locations, "log4j2-test.yaml", "log4j2-test.yml");
+//		}
+//		if (isClassAvailable("com.fasterxml.jackson.databind.ObjectMapper")) {
+//			Collections.addAll(locations, "log4j2-test.json", "log4j2-test.jsn");
+//		}
+//		locations.add("log4j2-test.xml");
+//		locations.add("log4j2.properties");
+//		if (isClassAvailable("com.fasterxml.jackson.dataformat.yaml.YAMLParser")) {
+//			Collections.addAll(locations, "log4j2.yaml", "log4j2.yml");
+//		}
+//		if (isClassAvailable("com.fasterxml.jackson.databind.ObjectMapper")) {
+//			Collections.addAll(locations, "log4j2.json", "log4j2.jsn");
+//		}
+//		locations.add("log4j2.xml");
+//		String propertyDefinedLocation = new PropertiesUtil(new Properties())
+//			.getStringProperty(ConfigurationFactory.CONFIGURATION_FILE_PROPERTY);
+//		if (propertyDefinedLocation != null) {
+//			locations.add(propertyDefinedLocation);
+//		}
+//		return StringUtils.toStringArray(locations);
+		this.confManager.getStandardConfigLocations();
 	}
 
 	protected boolean isClassAvailable(String className) {
@@ -238,26 +243,29 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 //		loggerContext.getConfiguration().removeFilter(FILTER);
 //		super.initialize(initializationContext, configLocation, logFile);
 //		markAsInitialized(loggerContext);
-		this.initializer.initialize();
+		this.initializer.initialize(initializationContext, configLocation, logFile);
 		markAsInitialized(loggerContext);
 	}
 
 	@Override
 	protected void loadDefaults(LoggingInitializationContext initializationContext, LogFile logFile) {
-		String location = getPackagedConfigFile((logFile != null) ? "log4j2-file.xml" : "log4j2.xml");
-		load(initializationContext, location, logFile);
+//		String location = getPackagedConfigFile((logFile != null) ? "log4j2-file.xml" : "log4j2.xml");
+//		load(initializationContext, location, logFile);
+		this.confManager.loadDefaults(initializationContext, logFile);
 	}
 
 	@Override
 	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
 			LogFile logFile) {
-		load(initializationContext, location, logFile);
+//		load(initializationContext, location, logFile);
+		this.confManager.loadConfiguration(initializationContext, location, logFile);
 	}
 
 	private void load(LoggingInitializationContext initializationContext, String location, LogFile logFile) {
-		List<String> overrides = getOverrides(initializationContext);
-		applySystemProperties(initializationContext.getEnvironment(), logFile);
-		loadConfiguration(location, logFile, overrides);
+//		List<String> overrides = getOverrides(initializationContext);
+//		applySystemProperties(initializationContext.getEnvironment(), logFile);
+//		loadConfiguration(location, logFile, overrides);
+		this.confManager.load(initializationContext, location, logFile);
 	}
 
 	private List<String> getOverrides(LoggingInitializationContext initializationContext) {
@@ -319,14 +327,15 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 
 	@Override
 	protected void reinitialize(LoggingInitializationContext initializationContext) {
-		List<String> overrides = getOverrides(initializationContext);
-		if (!CollectionUtils.isEmpty(overrides)) {
-			reinitializeWithOverrides(overrides);
-		}
-		else {
-			LoggerContext context = getLoggerContext();
-			context.reconfigure();
-		}
+//		List<String> overrides = getOverrides(initializationContext);
+//		if (!CollectionUtils.isEmpty(overrides)) {
+//			reinitializeWithOverrides(overrides);
+//		}
+//		else {
+//			LoggerContext context = getLoggerContext();
+//			context.reconfigure();
+//		}
+		this.confManager.reinitialize(initializationContext);
 	}
 
 	private void reinitializeWithOverrides(List<String> overrides) {
@@ -487,7 +496,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 
 	private boolean isAlreadyInitialized(LoggerContext loggerContext) {
 //		return LoggingSystem.class.getName().equals(loggerContext.getExternalContext());
-		this.initializer.isAlreadyInitialized();
+		this.initializer.isAlreadyInitialized(loggerContext);
 	}
 
 	private void markAsInitialized(LoggerContext loggerContext) {
