@@ -159,7 +159,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 
 	@Override
 	public void beforeInitialize() {
-//		LoggerContext loggerContext = getLoggerContext();
+		LoggerContext loggerContext = getLoggerContext();
 //		if (isAlreadyInitialized(loggerContext)) {
 //			return;
 //		}
@@ -167,23 +167,26 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 //			super.beforeInitialize();
 //		}
 //		loggerContext.getConfiguration().addFilter(FILTER);
+		if (isAlreadyInitialized(loggerContext)) {
+			return;
+		}
 		this.initializer.beforeInitialize();
+		loggerContext.getConfiguration().addFilter(FILTER);
 	}
 
 	private boolean configureJdkLoggingBridgeHandler() {
-//		try {
-//			if (isJulUsingASingleConsoleHandlerAtMost() && !isLog4jLogManagerInstalled()
-//					&& isLog4jBridgeHandlerAvailable()) {
-//				removeDefaultRootHandler();
-//				Log4jBridgeHandler.install(false, null, true);
-//				return true;
-//			}
-//		}
-//		catch (Throwable ex) {
-//			// Ignore. No java.util.logging bridge is installed.
-//		}
-//		return false;
-		this.initializer.configureJdkLoggingBridgeHandler();
+		try {
+			if (isJulUsingASingleConsoleHandlerAtMost() && !isLog4jLogManagerInstalled()
+					&& isLog4jBridgeHandlerAvailable()) {
+				removeDefaultRootHandler();
+				Log4jBridgeHandler.install(false, null, true);
+				return true;
+			}
+		}
+		catch (Throwable ex) {
+			// Ignore. No java.util.logging bridge is installed.
+		}
+		return false;
 	}
 
 	private boolean isJulUsingASingleConsoleHandlerAtMost() {
@@ -227,23 +230,21 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 
 	@Override
 	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
-//		LoggerContext loggerContext = getLoggerContext();
-//		if (isAlreadyInitialized(loggerContext)) {
-//			return;
-//		}
-//		StatusConsoleListener listener = new StatusConsoleListener(Level.WARN);
-//		StatusLogger.getLogger().registerListener(listener);
-//		loggerContext.putObject(STATUS_LISTENER_KEY, listener);
-//		Environment environment = initializationContext.getEnvironment();
-//		if (environment != null) {
-//			loggerContext.putObject(ENVIRONMENT_KEY, environment);
-//			Log4J2LoggingSystem.propertySource.setEnvironment(environment);
-//			PropertiesUtil.getProperties().addPropertySource(Log4J2LoggingSystem.propertySource);
-//		}
-//		loggerContext.getConfiguration().removeFilter(FILTER);
-//		super.initialize(initializationContext, configLocation, logFile);
-//		markAsInitialized(loggerContext);
-		this.initializer.initialize(initializationContext, configLocation, logFile);
+		LoggerContext loggerContext = getLoggerContext();
+		if (isAlreadyInitialized(loggerContext)) {
+			return;
+		}
+		StatusConsoleListener listener = new StatusConsoleListener(Level.WARN);
+		StatusLogger.getLogger().registerListener(listener);
+		loggerContext.putObject(STATUS_LISTENER_KEY, listener);
+		Environment environment = initializationContext.getEnvironment();
+		if (environment != null) {
+			loggerContext.putObject(ENVIRONMENT_KEY, environment);
+			Log4J2LoggingSystem.propertySource.setEnvironment(environment);
+			PropertiesUtil.getProperties().addPropertySource(Log4J2LoggingSystem.propertySource);
+		}
+		loggerContext.getConfiguration().removeFilter(FILTER);
+		super.initialize(initializationContext, configLocation, logFile);
 		markAsInitialized(loggerContext);
 	}
 
