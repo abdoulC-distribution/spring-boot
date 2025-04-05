@@ -75,6 +75,7 @@ import org.springframework.util.StringUtils;
 
 import Log4J2Initializer;
 import Log4J2ConfigurationManager;
+import Log4J2BridgeHandlerManager;
 
 /**
  * {@link LoggingSystem} for <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a>.
@@ -95,6 +96,8 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 	private final Log4J2Initializer initializer;
 
 	private final Log4J2ConfigurationManager confManager;
+
+	private final Log4J2BridgeHandlerManager bridgeHandlerManager;
 
 	private static final SpringEnvironmentPropertySource propertySource = new SpringEnvironmentPropertySource();
 
@@ -123,6 +126,7 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 		super(classLoader);
 		this.initializer = new Log4J2LoggingSystem(classLoader);
 		this.confManager = new Log4J2ConfigurationManager();
+		this.bridgeHandlerManager = new Log4J2BridgeHandlerManager();
 	}
 
 	@Override
@@ -205,14 +209,15 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 	}
 
 	private void removeLog4jBridgeHandler() {
-		removeDefaultRootHandler();
-		java.util.logging.Logger rootLogger = java.util.logging.LogManager.getLogManager().getLogger("");
-		for (final Handler handler : rootLogger.getHandlers()) {
-			if (handler instanceof Log4jBridgeHandler) {
-				handler.close();
-				rootLogger.removeHandler(handler);
-			}
-		}
+//		removeDefaultRootHandler();
+//		java.util.logging.Logger rootLogger = java.util.logging.LogManager.getLogManager().getLogger("");
+//		for (final Handler handler : rootLogger.getHandlers()) {
+//			if (handler instanceof Log4jBridgeHandler) {
+//				handler.close();
+//				rootLogger.removeHandler(handler);
+//			}
+//		}
+		this.bridgeHandlerManager.removeLog4jBridgeHandler();
 	}
 
 	private void removeDefaultRootHandler() {
