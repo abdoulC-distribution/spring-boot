@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.type.classreading;
+package org.springframework.boot;
 
 import java.io.IOException;
 import java.util.Map;
