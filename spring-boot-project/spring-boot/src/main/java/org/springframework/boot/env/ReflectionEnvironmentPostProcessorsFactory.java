@@ -26,7 +26,8 @@ import org.springframework.boot.BootstrapContext;
 import org.springframework.boot.BootstrapRegistry;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.logging.DeferredLogFactory;
-import org.springframework.boot.util.Instantiator;
+//import org.springframework.boot.util.Instantiator;
+import org.springframework.boot.Instantiator;
 
 /**
  * {@link EnvironmentPostProcessorsFactory} implementation that uses reflection to create

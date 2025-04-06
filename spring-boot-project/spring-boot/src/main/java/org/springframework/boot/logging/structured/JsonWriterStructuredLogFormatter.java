@@ -21,7 +21,8 @@ import java.util.function.Consumer;
 
 import org.springframework.boot.json.JsonWriter;
 import org.springframework.boot.json.JsonWriter.Members;
-import org.springframework.boot.util.LambdaSafe;
+//import org.springframework.boot.util.LambdaSafe;
+import org.springframework.boot.LambdaSafe;
 
 /**
  * Base class for {@link StructuredLogFormatter} implementations that generates JSON using

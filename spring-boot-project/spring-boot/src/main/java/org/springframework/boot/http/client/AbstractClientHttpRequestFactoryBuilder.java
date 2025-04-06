@@ -22,7 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.springframework.boot.util.LambdaSafe;
+//import org.springframework.boot.util.LambdaSafe;
+import org.springframework.boot.LambdaSafe;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.util.Assert;
 

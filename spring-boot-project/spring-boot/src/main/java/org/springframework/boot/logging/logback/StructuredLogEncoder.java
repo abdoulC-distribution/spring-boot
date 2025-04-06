@@ -30,8 +30,10 @@ import org.springframework.boot.logging.structured.StructuredLogFormatter;
 import org.springframework.boot.logging.structured.StructuredLogFormatterFactory;
 import org.springframework.boot.logging.structured.StructuredLogFormatterFactory.CommonFormatters;
 import org.springframework.boot.logging.structured.StructuredLoggingJsonMembersCustomizer;
-import org.springframework.boot.util.Instantiator;
-import org.springframework.boot.util.Instantiator.AvailableParameters;
+//import org.springframework.boot.util.Instantiator;
+import org.springframework.boot.Instantiator;
+//import org.springframework.boot.util.Instantiator.AvailableParameters;
+import org.springframework.boot.Instantiator.AvailableParameters;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 

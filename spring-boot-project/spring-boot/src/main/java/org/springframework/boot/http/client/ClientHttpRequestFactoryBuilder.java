@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import org.springframework.boot.util.LambdaSafe;
+//import org.springframework.boot.util.LambdaSafe;
+import org.springframework.boot.LambdaSafe;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;

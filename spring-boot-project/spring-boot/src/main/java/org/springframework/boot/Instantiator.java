@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.util;
+package org.springframework.boot;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;

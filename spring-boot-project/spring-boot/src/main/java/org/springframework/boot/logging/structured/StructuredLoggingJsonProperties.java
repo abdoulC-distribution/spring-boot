@@ -34,7 +34,8 @@ import org.springframework.boot.context.properties.bind.BindableRuntimeHintsRegi
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.logging.StackTracePrinter;
 import org.springframework.boot.logging.StandardStackTracePrinter;
-import org.springframework.boot.util.Instantiator;
+//import org.springframework.boot.util.Instantiator;
+import org.springframework.boot.Instantiator;
 import org.springframework.core.env.Environment;
 
 /**
