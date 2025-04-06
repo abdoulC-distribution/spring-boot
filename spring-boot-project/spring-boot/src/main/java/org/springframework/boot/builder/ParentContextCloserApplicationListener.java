@@ -19,7 +19,7 @@ package org.springframework.boot.builder;
 import java.lang.ref.WeakReference;
 
 import org.springframework.beans.BeansException;
-import org.springframework.boot.builder.ParentContextApplicationContextInitializer.ParentContextAvailableEvent;
+import org.springframework.boot.builder.ParentContextAvailableEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;

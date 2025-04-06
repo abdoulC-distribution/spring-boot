@@ -24,6 +24,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
 
+import ParentContextAvailableEvent;
+
 /**
  * {@link ApplicationContextInitializer} for setting the parent context. Also publishes
  * {@link ParentContextAvailableEvent} when the context is refreshed to signal to other
@@ -83,16 +85,16 @@ public class ParentContextApplicationContextInitializer
 	/**
 	 * {@link ApplicationEvent} fired when a parent context is available.
 	 */
-	public static class ParentContextAvailableEvent extends ApplicationEvent {
-
-		public ParentContextAvailableEvent(ConfigurableApplicationContext applicationContext) {
-			super(applicationContext);
-		}
-
-		public ConfigurableApplicationContext getApplicationContext() {
-			return (ConfigurableApplicationContext) getSource();
-		}
-
-	}
+//	public static class ParentContextAvailableEvent extends ApplicationEvent {
+//
+//		public ParentContextAvailableEvent(ConfigurableApplicationContext applicationContext) {
+//			super(applicationContext);
+//		}
+//
+//		public ConfigurableApplicationContext getApplicationContext() {
+//			return (ConfigurableApplicationContext) getSource();
+//		}
+//
+//	}
 
 }
