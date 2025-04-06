@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.cloud;
+package org.springframework.boot;
 
 import java.util.Arrays;
 import java.util.List;

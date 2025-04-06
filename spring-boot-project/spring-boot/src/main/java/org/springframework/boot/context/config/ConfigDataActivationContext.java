@@ -16,7 +16,8 @@
 
 package org.springframework.boot.context.config;
 
-import org.springframework.boot.cloud.CloudPlatform;
+//mport org.springframework.boot.cloud.CloudPlatform;
+import org.springframework.boot.CloudPlatform;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.style.ToStringCreator;

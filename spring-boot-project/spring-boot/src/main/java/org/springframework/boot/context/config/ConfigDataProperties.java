@@ -20,7 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.springframework.boot.cloud.CloudPlatform;
+//import org.springframework.boot.cloud.CloudPlatform;
+import org.springframework.boot.CloudPlatform;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.bind.Name;
