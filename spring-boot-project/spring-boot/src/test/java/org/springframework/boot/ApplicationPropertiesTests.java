@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.predicate.RuntimeHintsPredicates;
-import org.springframework.boot.ApplicationProperties.ApplicationPropertiesRuntimeHints;
+import org.springframework.boot.ApplicationPropertiesRuntimeHints;
 import org.springframework.boot.Banner.Mode;
 import org.springframework.mock.env.MockEnvironment;
 

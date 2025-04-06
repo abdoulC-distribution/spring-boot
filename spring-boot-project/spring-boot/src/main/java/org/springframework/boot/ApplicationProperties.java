@@ -159,13 +159,13 @@ class ApplicationProperties {
 		this.webApplicationType = webApplicationType;
 	}
 
-	static class ApplicationPropertiesRuntimeHints implements RuntimeHintsRegistrar {
-
-		@Override
-		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-			BindableRuntimeHintsRegistrar.forTypes(ApplicationProperties.class).registerHints(hints, classLoader);
-		}
-
-	}
+//	static class ApplicationPropertiesRuntimeHints implements RuntimeHintsRegistrar {
+//
+//		@Override
+//		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+//			BindableRuntimeHintsRegistrar.forTypes(ApplicationProperties.class).registerHints(hints, classLoader);
+//		}
+//
+//	}
 
 }

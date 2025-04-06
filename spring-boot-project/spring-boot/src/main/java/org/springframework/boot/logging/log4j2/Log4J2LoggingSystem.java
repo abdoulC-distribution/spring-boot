@@ -76,6 +76,7 @@ import org.springframework.util.StringUtils;
 import Log4J2Initializer;
 import Log4J2ConfigurationManager;
 import Log4J2BridgeHandlerManager;
+import LevelSetLoggerConfig;
 
 /**
  * {@link LoggingSystem} for <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a>.
@@ -532,31 +533,31 @@ public class Log4J2LoggingSystem extends AbstractLoggingSystem {
 	/**
 	 * {@link LoggingSystemFactory} that returns {@link Log4J2LoggingSystem} if possible.
 	 */
-	@Order(0)
-	public static class Factory implements LoggingSystemFactory {
+//	@Order(0)
+//	public static class Factory implements LoggingSystemFactory {
+//
+//		private static final boolean PRESENT = ClassUtils
+//			.isPresent("org.apache.logging.log4j.core.impl.Log4jContextFactory", Factory.class.getClassLoader());
+//
+//		@Override
+//		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
+//			if (PRESENT) {
+//				return new Log4J2LoggingSystem(classLoader);
+//			}
+//			return null;
+//		}
 
-		private static final boolean PRESENT = ClassUtils
-			.isPresent("org.apache.logging.log4j.core.impl.Log4jContextFactory", Factory.class.getClassLoader());
-
-		@Override
-		public LoggingSystem getLoggingSystem(ClassLoader classLoader) {
-			if (PRESENT) {
-				return new Log4J2LoggingSystem(classLoader);
-			}
-			return null;
-		}
-
-	}
+//	}
 
 	/**
 	 * {@link LoggerConfig} used when the user has set a specific {@link Level}.
 	 */
-	private static class LevelSetLoggerConfig extends LoggerConfig {
-
-		LevelSetLoggerConfig(String name, Level level, boolean additive) {
-			super(name, level, additive);
-		}
-
-	}
+//	private static class LevelSetLoggerConfig extends LoggerConfig {
+//
+//		LevelSetLoggerConfig(String name, Level level, boolean additive) {
+//			super(name, level, additive);
+//		}
+//
+//	}
 
 }
