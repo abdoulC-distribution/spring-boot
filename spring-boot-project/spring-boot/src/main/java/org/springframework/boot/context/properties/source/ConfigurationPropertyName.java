@@ -318,16 +318,21 @@ public final class ConfigurationPropertyName implements Comparable<Configuration
 			catch (ArrayIndexOutOfBoundsException ex) {
 				throw new RuntimeException(ex);
 			}
+			catch (IllegalArgumentException ex) {
+				throw new RuntimeException(ex.getMessage());
+			}
 		}
 		return 0;
 	}
 
 	private int compare(String e1, ElementType type1, String e2, ElementType type2) {
 		if (e1 == null) {
-			return -1;
+//			return -1;
+			throw new IllegalArgumentException("e1 ne devrait pas être null");
 		}
 		if (e2 == null) {
-			return 1;
+//			return 1;
+			throw new IllegalArgumentException("e2 ne devrait pas être null");
 		}
 		int result = Boolean.compare(type2.isIndexed(), type1.isIndexed());
 		if (result != 0) {
