@@ -339,9 +339,18 @@ public class SpringApplication {
 	}
 
 	private DefaultBootstrapContext createBootstrapContext() {
-		DefaultBootstrapContext bootstrapContext = new DefaultBootstrapContext();
-		this.bootstrapRegistryInitializers.forEach((initializer) -> initializer.initialize(bootstrapContext));
+		DefaultBootstrapContext bootstrapContext = newBootstrapContext();
+		//this.bootstrapRegistryInitializers.forEach((initializer) -> initializer.initialize(bootstrapContext));
+		InitializeBootstrapContext(bootstrapContext);
 		return bootstrapContext;
+	}
+
+	private void InitializeBootstrapContext(DefaultBootstrapContext bootstrapContext) {
+		this.bootstrapRegistryInitializers.forEach((initializer) -> initializer.initialize(bootstrapContext));
+	}
+
+	private DefaultBootstrapContext newBootstrapContext() {
+		return new DefaultBootstrapContext();
 	}
 
 	private ConfigurableEnvironment prepareEnvironment(SpringApplicationRunListeners listeners,
