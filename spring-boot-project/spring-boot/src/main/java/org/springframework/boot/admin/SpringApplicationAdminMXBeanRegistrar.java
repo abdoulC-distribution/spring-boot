@@ -154,6 +154,12 @@ public class SpringAppAdminRegistrar implements ApplicationContextAware, Generic
 			return SpringAppAdminRegistrar.this.environment.getProperty(key);
 		}
 
+		public String getProperty(String key, String defaultValue) {
+			String val = SpringAppAdminRegistrar.this.environment.getProperty(key);
+			if(val != null) return val;
+			return defaultValue;
+		}
+
 		@Override
 		public void shutdown() {
 			logger.info("Application shutdown requested.");
