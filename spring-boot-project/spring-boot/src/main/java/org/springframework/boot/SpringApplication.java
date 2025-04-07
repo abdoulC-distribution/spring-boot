@@ -543,8 +543,8 @@ public class SpringApplication {
 	 * @param args arguments passed to the {@code run} method
 	 * @see #configureEnvironment(ConfigurableEnvironment, String[])
 	 */
-	protected void configureProfiles(ConfigurableEnvironment environment, String[] args) {
-	}
+//	protected void configureProfiles(ConfigurableEnvironment environment, String[] args) {
+//	}
 
 	/**
 	 * Bind the environment to the {@link ApplicationProperties}.
@@ -766,8 +766,8 @@ public class SpringApplication {
 	 * @param context the application context
 	 * @param args the application arguments
 	 */
-	protected void afterRefresh(ConfigurableApplicationContext context, ApplicationArguments args) {
-	}
+//	protected void afterRefresh(ConfigurableApplicationContext context, ApplicationArguments args) {
+//	}
 
 	private void callRunners(ConfigurableApplicationContext context, ApplicationArguments args) {
 		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
