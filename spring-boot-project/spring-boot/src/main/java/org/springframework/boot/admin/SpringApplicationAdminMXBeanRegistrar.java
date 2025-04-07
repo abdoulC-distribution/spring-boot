@@ -50,7 +50,7 @@ import org.springframework.util.Assert;
  * @author Andy Wilkinson
  * @since 1.3.0
  */
-public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContextAware, GenericApplicationListener,
+public class SpringAppAdminRegistrar implements ApplicationContextAware, GenericApplicationListener,
 		EnvironmentAware, InitializingBean, DisposableBean {
 
 	private static final Log logger = LogFactory.getLog(SpringApplicationAdmin.class);
@@ -65,7 +65,7 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 
 	private boolean embeddedWebApplication = false;
 
-	public SpringApplicationAdminMXBeanRegistrar(String name) throws MalformedObjectNameException {
+	public SpringAppAdminRegistrar(String name) throws MalformedObjectNameException {
 		this.objectName = new ObjectName(name);
 	}
 
@@ -141,23 +141,23 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 
 		@Override
 		public boolean isReady() {
-			return SpringApplicationAdminMXBeanRegistrar.this.ready;
+			return SpringAppAdminRegistrar.this.ready;
 		}
 
 		@Override
 		public boolean isEmbeddedWebApplication() {
-			return SpringApplicationAdminMXBeanRegistrar.this.embeddedWebApplication;
+			return SpringAppAdminRegistrar.this.embeddedWebApplication;
 		}
 
 		@Override
 		public String getProperty(String key) {
-			return SpringApplicationAdminMXBeanRegistrar.this.environment.getProperty(key);
+			return SpringAppAdminRegistrar.this.environment.getProperty(key);
 		}
 
 		@Override
 		public void shutdown() {
 			logger.info("Application shutdown requested.");
-			SpringApplicationAdminMXBeanRegistrar.this.applicationContext.close();
+			SpringAppAdminRegistrar.this.applicationContext.close();
 		}
 
 	}
