@@ -128,36 +128,70 @@ public final class CorrelationIdFormatter {
 	 * @param spec a comma-separated specification
 	 * @return a new {@link CorrelationIdFormatter} instance
 	 */
-	public static CorrelationIdFormatter of(String spec) {
+//	public static CorrelationIdFormatter of(String spec) {
+//		try {
+//			return (!StringUtils.hasText(spec)) ? DEFAULT : of(List.of(spec.split(",")));
+//		}
+//		catch (Exception ex) {
+//			throw new IllegalStateException("Unable to parse correlation formatter spec '%s'".formatted(spec), ex);
+//		}
+//	}
+//
+//	/**
+//	 * Create a new {@link CorrelationIdFormatter} instance from the given specification.
+//	 * @param spec a pre-separated specification
+//	 * @return a new {@link CorrelationIdFormatter} instance
+//	 */
+//	public static CorrelationIdFormatter of(String[] spec) {
+//		return of((spec != null) ? List.of(spec) : Collections.emptyList());
+//	}
+//
+//	/**
+//	 * Create a new {@link CorrelationIdFormatter} instance from the given specification.
+//	 * @param spec a pre-separated specification
+//	 * @return a new {@link CorrelationIdFormatter} instance
+//	 */
+//	public static CorrelationIdFormatter of(Collection<String> spec) {
+//		if (CollectionUtils.isEmpty(spec)) {
+//			return DEFAULT;
+//		}
+//		List<Part> parts = spec.stream().map(Part::of).toList();
+//		return new CorrelationIdFormatter(parts);
+//	}
+
+	public static CorrelationIdFormatter of(Object spec) {
 		try {
-			return (!StringUtils.hasText(spec)) ? DEFAULT : of(List.of(spec.split(",")));
+			List<Part> parts;
+			if (spec == null) {
+				parts = Collections.emptyList();
+			}
+			else if (spec instanceof String str) {
+				if (!StringUtils.hasText(str)) {
+					return DEFAULT;
+				}
+				parts = List.of(str.split(",")).stream().map(Part::of).toList();
+			}
+			else if (spec instanceof String[] array) {
+				parts = ((array != null) ? List.of(array) : Collections.<String>emptyList()).stream()
+						.map(Part::of).toList();
+			}
+			else if (spec instanceof Collection<?> collection) {
+				if (CollectionUtils.isEmpty(collection)) {
+					return DEFAULT;
+				}
+				parts = collection.stream().map(Part::of).toList();
+			}
+			else {
+				throw new IllegalArgumentException("spec : " + spec.getClass());
+			}
+			return new CorrelationIdFormatter(parts);
 		}
 		catch (Exception ex) {
 			throw new IllegalStateException("Unable to parse correlation formatter spec '%s'".formatted(spec), ex);
 		}
 	}
 
-	/**
-	 * Create a new {@link CorrelationIdFormatter} instance from the given specification.
-	 * @param spec a pre-separated specification
-	 * @return a new {@link CorrelationIdFormatter} instance
-	 */
-	public static CorrelationIdFormatter of(String[] spec) {
-		return of((spec != null) ? List.of(spec) : Collections.emptyList());
-	}
 
-	/**
-	 * Create a new {@link CorrelationIdFormatter} instance from the given specification.
-	 * @param spec a pre-separated specification
-	 * @return a new {@link CorrelationIdFormatter} instance
-	 */
-	public static CorrelationIdFormatter of(Collection<String> spec) {
-		if (CollectionUtils.isEmpty(spec)) {
-			return DEFAULT;
-		}
-		List<Part> parts = spec.stream().map(Part::of).toList();
-		return new CorrelationIdFormatter(parts);
-	}
 
 	/**
 	 * A part of the correlation id.
