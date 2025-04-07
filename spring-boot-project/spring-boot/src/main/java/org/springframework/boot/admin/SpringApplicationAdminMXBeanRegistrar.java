@@ -50,7 +50,7 @@ import org.springframework.util.Assert;
  * @author Andy Wilkinson
  * @since 1.3.0
  */
-public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContextAware, GenericApplicationListener,
+public class SpringAppAdminRegistrar implements ApplicationContextAware, GenericApplicationListener,
 		EnvironmentAware, InitializingBean, DisposableBean {
 
 	private static final Log logger = LogFactory.getLog(SpringApplicationAdmin.class);
@@ -63,9 +63,9 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 
 	private boolean ready = false;
 
-	private boolean embeddedWebApplication = false;
+	private boolean isWebApplicationEmbedded = false;
 
-	public SpringApplicationAdminMXBeanRegistrar(String name) throws MalformedObjectNameException {
+	public SpringAppAdminRegistrar(String name) throws MalformedObjectNameException {
 		this.objectName = new ObjectName(name);
 	}
 
@@ -99,7 +99,7 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof ApplicationReadyEvent readyEvent) {
-			onApplicationReadyEvent(readyEvent);
+			handleApplicationReadyEvent(readyEvent);
 		}
 		if (event instanceof WebServerInitializedEvent initializedEvent) {
 			onWebServerInitializedEvent(initializedEvent);
@@ -111,7 +111,7 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 		return Ordered.HIGHEST_PRECEDENCE;
 	}
 
-	void onApplicationReadyEvent(ApplicationReadyEvent event) {
+	void handleApplicationReadyEvent(ApplicationReadyEvent event) {
 		if (this.applicationContext.equals(event.getApplicationContext())) {
 			this.ready = true;
 		}
@@ -119,7 +119,7 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 
 	void onWebServerInitializedEvent(WebServerInitializedEvent event) {
 		if (this.applicationContext.equals(event.getApplicationContext())) {
-			this.embeddedWebApplication = true;
+			this.isWebApplicationEmbedded = true;
 		}
 	}
 
@@ -141,23 +141,29 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 
 		@Override
 		public boolean isReady() {
-			return SpringApplicationAdminMXBeanRegistrar.this.ready;
+			return SpringAppAdminRegistrar.this.ready;
 		}
 
 		@Override
 		public boolean isEmbeddedWebApplication() {
-			return SpringApplicationAdminMXBeanRegistrar.this.embeddedWebApplication;
+			return SpringAppAdminRegistrar.this.isWebApplicationEmbedded;
 		}
 
 		@Override
 		public String getProperty(String key) {
-			return SpringApplicationAdminMXBeanRegistrar.this.environment.getProperty(key);
+			return SpringAppAdminRegistrar.this.environment.getProperty(key);
+		}
+
+		public String getProperty(String key, String defaultValue) {
+			String val = SpringAppAdminRegistrar.this.environment.getProperty(key);
+			if(val != null) return val;
+			return defaultValue;
 		}
 
 		@Override
 		public void shutdown() {
 			logger.info("Application shutdown requested.");
-			SpringApplicationAdminMXBeanRegistrar.this.applicationContext.close();
+			SpringAppAdminRegistrar.this.applicationContext.close();
 		}
 
 	}

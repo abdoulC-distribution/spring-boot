@@ -188,10 +188,12 @@ public final class CorrelationIdFormatter {
 		}
 
 		static Part of(String part) {
+			int groupIndex = 1;
+			int lengthIndex = 2;
 			Matcher matcher = pattern.matcher(part.trim());
 			Assert.state(matcher.matches(), () -> "Invalid specification part '%s'".formatted(part));
-			String name = matcher.group(1);
-			int length = Integer.parseInt(matcher.group(2));
+			String name = matcher.group(groupIndex);
+			int length = Integer.parseInt(matcher.group(lengthIndex));
 			return new Part(name, length);
 		}
 
