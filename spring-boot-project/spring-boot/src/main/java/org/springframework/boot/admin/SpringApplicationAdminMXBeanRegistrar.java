@@ -63,7 +63,7 @@ public class SpringAppAdminRegistrar implements ApplicationContextAware, Generic
 
 	private boolean ready = false;
 
-	private boolean embeddedWebApplication = false;
+	private boolean isWebApplicationEmbedded = false;
 
 	public SpringAppAdminRegistrar(String name) throws MalformedObjectNameException {
 		this.objectName = new ObjectName(name);
@@ -99,7 +99,7 @@ public class SpringAppAdminRegistrar implements ApplicationContextAware, Generic
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof ApplicationReadyEvent readyEvent) {
-			onApplicationReadyEvent(readyEvent);
+			handleApplicationReadyEvent(readyEvent);
 		}
 		if (event instanceof WebServerInitializedEvent initializedEvent) {
 			onWebServerInitializedEvent(initializedEvent);
@@ -111,7 +111,7 @@ public class SpringAppAdminRegistrar implements ApplicationContextAware, Generic
 		return Ordered.HIGHEST_PRECEDENCE;
 	}
 
-	void onApplicationReadyEvent(ApplicationReadyEvent event) {
+	void handleApplicationReadyEvent(ApplicationReadyEvent event) {
 		if (this.applicationContext.equals(event.getApplicationContext())) {
 			this.ready = true;
 		}
@@ -119,7 +119,7 @@ public class SpringAppAdminRegistrar implements ApplicationContextAware, Generic
 
 	void onWebServerInitializedEvent(WebServerInitializedEvent event) {
 		if (this.applicationContext.equals(event.getApplicationContext())) {
-			this.embeddedWebApplication = true;
+			this.isWebApplicationEmbedded = true;
 		}
 	}
 
@@ -146,7 +146,7 @@ public class SpringAppAdminRegistrar implements ApplicationContextAware, Generic
 
 		@Override
 		public boolean isEmbeddedWebApplication() {
-			return SpringAppAdminRegistrar.this.embeddedWebApplication;
+			return SpringAppAdminRegistrar.this.isWebApplicationEmbedded;
 		}
 
 		@Override
